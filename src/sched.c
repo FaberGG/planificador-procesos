@@ -135,8 +135,15 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
             }
         }
 
-        // Cambiar a la siguiente cola de prioridad
-        cola_actual = (cola_actual + 1) % nqueues;
+        //cola_actual = (cola_actual + 1) % nqueues;
+        int cola_encontrada = 0;
+        for (i = 0; i < nqueues; i++) {
+            if (!empty(queues[i].ready)) {
+                cola_actual = i;  // Siempre la de mayor prioridad disponible
+                cola_encontrada = 1;
+                break;
+            }
+        }
     }
 
     // CALCULAR ESTADISTICAS FINALES
