@@ -63,6 +63,22 @@ test3: $(TARGET)
 		echo "Error: Ejecute 'make setup-tests' primero"; \
 	fi
 
+# Test with files already created
+test_fifo: $(TARGET)
+	./$(TARGET) test/caso_1_fifo.txt
+
+test_rr: $(TARGET)
+	./$(TARGET) test/caso_1_rr.txt
+
+test_sjf: $(TARGET)
+	./$(TARGET) test/caso_1_sjf.txt
+
+test_srt: $(TARGET)
+	./$(TARGET) test/caso_1_srt.txt
+
+test_multicolas: $(TARGET)
+	./$(TARGET) test/caso_2_multicolas.txt
+
 # Create test directory and sample files
 setup-tests: $(TESTDIR)
 	@echo "# Test 1: Round Robin básico" > $(TESTDIR)/test1.txt
