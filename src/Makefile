@@ -108,13 +108,6 @@ test_rr: $(TARGET) setup-tests
 $(TESTDIR):
 	mkdir -p $(TESTDIR)
 
-# Install dependencies (gnuplot for plotting)
-install-deps:
-	@echo "Para generar gráficos de Gantt, instale gnuplot:"
-	@echo "  Ubuntu/Debian: sudo apt-get install gnuplot"
-	@echo "  CentOS/RHEL: sudo yum install gnuplot"
-	@echo "  macOS: brew install gnuplot"
-	@echo "  Windows: Descargue desde http://www.gnuplot.info/"
 
 # Help
 help:
