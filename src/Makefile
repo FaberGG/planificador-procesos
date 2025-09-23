@@ -65,13 +65,13 @@ test3: $(TARGET)
 
 # Test with files already created
 test_fifo: $(TARGET)
-	./$(TARGET) test/caso_1_fifo.txt
+	./$(TARGET) < $(TESTDIR)/caso_1_fifo.txt
 
 test_rr: $(TARGET)
-	./$(TARGET) test/caso_1_rr.txt
+	./$(TARGET) < $(TESTDIR)/caso_1_rr.txt
 
 test_multicolas: $(TARGET)
-	./$(TARGET) test/caso_2_multicolas.txt
+	./$(TARGET) < $(TESTDIR)/caso_2_multicolas.txt
 
 # Create test directory and sample files
 setup-tests: $(TESTDIR)
@@ -134,6 +134,9 @@ help:
 	@echo "  test1        - Ejecutar prueba 1"
 	@echo "  test2        - Ejecutar prueba 2"
 	@echo "  test3        - Ejecutar prueba 3"
+	@echo "  test_fifo        - Ejecutar prueba fifo"
+	@echo "  test_rr        - Ejecutar prueba rr"
+	@echo "  test_multicolas        - Ejecutar prueba multicolas"
 	@echo "  install-deps - Información sobre dependencias"
 	@echo "  help         - Mostrar esta ayuda"
 
