@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief Planificación de procesos
- * @author Erwin Meza Vega [emezav@unicauca.edu.co]
+ * @author John Navia, Ricardo Delgado
  *
  */
 
@@ -36,9 +36,14 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
     printf("Procesos a simular: %d\n", procesos_restantes);
     printf("Colas de prioridad: %d\n", nqueues);
 
+    // IMPORTANTE: Preparar las colas antes de empezar
+    prepare(processes, queues, nqueues);
+
     // Obtener el tiempo minimo de llegada
     tiempo_actual = get_next_arrival(queues, nqueues);
     if (tiempo_actual == -1) tiempo_actual = 0;
+
+    printf("Tiempo inicial: %d\n", tiempo_actual);
 
     // Procesar llegadas iniciales
     process_arrival(tiempo_actual, queues, nqueues);
@@ -296,22 +301,35 @@ void prepare(list *processes, priority_queue *queues, int nqueues)
     process *p;
     node_iterator it;
 
+    printf("Preparando simulacion...\n");
+
     /* Limpiar las colas de prioridad */
     for (i = 0; i < nqueues; i++)
     {
         if (queues[i].ready != 0)
         {
             clear_list(queues[i].ready, 0);
+        }
+        else
+        {
             queues[i].ready = create_list();
         }
+        
         if (queues[i].arrival != 0)
         {
             clear_list(queues[i].arrival, 0);
+        }
+        else
+        {
             queues[i].arrival = create_list();
         }
+        
         if (queues[i].finished != 0)
         {
             clear_list(queues[i].finished, 0);
+        }
+        else
+        {
             queues[i].finished = create_list();
         }
     }
@@ -321,12 +339,28 @@ void prepare(list *processes, priority_queue *queues, int nqueues)
     {
         p = (process *)it->data;
         restart_process(p);
+        
+        printf("Agregando proceso %s a cola %d (arrival: %d)\n", 
+               p->name, p->priority, p->arrival_time);
+        
+        // Verificar que la prioridad sea válida
+        if (p->priority < 0 || p->priority >= nqueues)
+        {
+            printf("Error: proceso %s tiene prioridad invalida %d\n", p->name, p->priority + 1);
+            continue;
+        }
+        
         insert_ordered(queues[p->priority].arrival, p, compare_arrival);
     }
 
-    printf("Prepared queues:\n");
-    for (i=0; i<nqueues; i++) {
-        print_queue(&queues[i]);
+    printf("Colas preparadas:\n");
+    for (i = 0; i < nqueues; i++) {
+        printf("Cola %d (%s, q=%d): arrival=%d, ready=%d\n", 
+               i+1, 
+               queues[i].strategy == RR ? "RR" : "FIFO",
+               queues[i].quantum,
+               queues[i].arrival->count,
+               queues[i].ready->count);
     }
 }
 

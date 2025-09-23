@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief Modulo para generar el diagrama de Gantt de la planificacion.
- * @author Erwin Meza Vega <emezav@unicauca.edu.co>
+ * @author John Navia, Ricardo Delgado
  * @copyright MIT License
  */
 

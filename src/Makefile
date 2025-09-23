@@ -1,5 +1,5 @@
 # Makefile for Process Scheduling Simulator
-# Author: Erwin Meza Vega <emezav@unicauca.edu.co>
+# Author: Faber Navia y Ricardo Delgado
 # Optimized for Debian 12 (GNU/Linux)
 
 CC = gcc
@@ -63,42 +63,25 @@ test3: $(TARGET)
 		echo "Error: Ejecute 'make setup-tests' primero"; \
 	fi
 
-# Test with files already created
-test_fifo: $(TARGET)
-	./$(TARGET) < $(TESTDIR)/caso_1_fifo.txt
-
-test_rr: $(TARGET)
-	./$(TARGET) < $(TESTDIR)/caso_1_rr.txt
-
-test_multicolas: $(TARGET)
-	./$(TARGET) < $(TESTDIR)/caso_2_multicolas.txt
-
 # Create test directory and sample files
 setup-tests: $(TESTDIR)
-	@echo "# Test 1: Round Robin básico" > $(TESTDIR)/test1.txt
-	@echo "DEFINE queues 2" >> $(TESTDIR)/test1.txt
-	@echo "DEFINE scheduling 1 RR" >> $(TESTDIR)/test1.txt
-	@echo "DEFINE scheduling 2 FIFO" >> $(TESTDIR)/test1.txt
-	@echo "DEFINE quantum 1 3" >> $(TESTDIR)/test1.txt
-	@echo "DEFINE quantum 2 5" >> $(TESTDIR)/test1.txt
-	@echo "PROCESS P1 0 10 1" >> $(TESTDIR)/test1.txt
-	@echo "PROCESS P2 2 5 1" >> $(TESTDIR)/test1.txt
-	@echo "PROCESS P3 4 8 2" >> $(TESTDIR)/test1.txt
-	@echo "START" >> $(TESTDIR)/test1.txt
+	@echo "# Test FIFO" > $(TESTDIR)/caso_1_fifo.txt
+	@echo "DEFINE queues 1" >> $(TESTDIR)/caso_1_fifo.txt
+	@echo "DEFINE scheduling 1 FIFO" >> $(TESTDIR)/caso_1_fifo.txt
+	@echo "DEFINE quantum 1 10" >> $(TESTDIR)/caso_1_fifo.txt
+	@echo "PROCESS p1 0 5 1" >> $(TESTDIR)/caso_1_fifo.txt
+	@echo "PROCESS p2 2 4 1" >> $(TESTDIR)/caso_1_fifo.txt
+	@echo "PROCESS p3 1 5 1" >> $(TESTDIR)/caso_1_fifo.txt
+	@echo "START" >> $(TESTDIR)/caso_1_fifo.txt
 	@echo ""
-	@echo "# Test 2: FIFO con diferentes prioridades" > $(TESTDIR)/test2.txt
-	@echo "DEFINE queues 3" >> $(TESTDIR)/test2.txt
-	@echo "DEFINE scheduling 1 FIFO" >> $(TESTDIR)/test2.txt
-	@echo "DEFINE scheduling 2 FIFO" >> $(TESTDIR)/test2.txt
-	@echo "DEFINE scheduling 3 RR" >> $(TESTDIR)/test2.txt
-	@echo "DEFINE quantum 1 1" >> $(TESTDIR)/test2.txt
-	@echo "DEFINE quantum 2 1" >> $(TESTDIR)/test2.txt
-	@echo "DEFINE quantum 3 2" >> $(TESTDIR)/test2.txt
-	@echo "PROCESS A 0 6 1" >> $(TESTDIR)/test2.txt
-	@echo "PROCESS B 1 4 2" >> $(TESTDIR)/test2.txt
-	@echo "PROCESS C 2 3 3" >> $(TESTDIR)/test2.txt
-	@echo "PROCESS D 3 2 1" >> $(TESTDIR)/test2.txt
-	@echo "START" >> $(TESTDIR)/test2.txt
+	@echo "# Test RR" > $(TESTDIR)/caso_1_rr.txt
+	@echo "DEFINE queues 1" >> $(TESTDIR)/caso_1_rr.txt
+	@echo "DEFINE scheduling 1 RR" >> $(TESTDIR)/caso_1_rr.txt
+	@echo "DEFINE quantum 1 2" >> $(TESTDIR)/caso_1_rr.txt
+	@echo "PROCESS p1 0 5 1" >> $(TESTDIR)/caso_1_rr.txt
+	@echo "PROCESS p2 2 4 1" >> $(TESTDIR)/caso_1_rr.txt
+	@echo "PROCESS p3 1 5 1" >> $(TESTDIR)/caso_1_rr.txt
+	@echo "START" >> $(TESTDIR)/caso_1_rr.txt
 	@echo ""
 	@echo "# Test 3: Ejemplo del enunciado" > $(TESTDIR)/test3.txt
 	@echo "DEFINE queues 3" >> $(TESTDIR)/test3.txt
@@ -113,6 +96,14 @@ setup-tests: $(TESTDIR)
 	@echo "PROCESS process3 7 25 3" >> $(TESTDIR)/test3.txt
 	@echo "START" >> $(TESTDIR)/test3.txt
 	@echo "Archivos de prueba creados en $(TESTDIR)/"
+
+test_fifo: $(TARGET) setup-tests
+	@echo "=== Ejecutando prueba FIFO ==="
+	./$(TARGET) < $(TESTDIR)/caso_1_fifo.txt
+
+test_rr: $(TARGET) setup-tests
+	@echo "=== Ejecutando prueba RR ==="
+	./$(TARGET) < $(TESTDIR)/caso_1_rr.txt
 
 $(TESTDIR):
 	mkdir -p $(TESTDIR)

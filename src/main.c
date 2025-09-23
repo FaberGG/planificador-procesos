@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief Programa principal para la simulacion de planificacion de procesos
- * @author Erwin Meza Vega <emezav@unicauca.edu.co>
+ * @author John Navia, Ricardo Delgado
  * @copyright MIT License
  */
 
@@ -56,7 +56,7 @@ int main()
         return 1;
     }
     
-    // Ejecutar simulacion
+    // Ejecutar simulacion (prepare se llama dentro de schedule)
     schedule(processes, queues, nqueues);
     
     // Opcional: crear diagrama de Gantt

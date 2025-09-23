@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief String split library
- * @author Author Erwin Meza Vega <emezav@gmail.com>
+ * @author Author John Navia, Ricardo Delgado
  * @copyright MIT License
  */
 #ifndef SPLIT_H_
