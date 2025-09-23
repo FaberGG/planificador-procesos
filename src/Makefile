@@ -70,12 +70,6 @@ test_fifo: $(TARGET)
 test_rr: $(TARGET)
 	./$(TARGET) test/caso_1_rr.txt
 
-test_sjf: $(TARGET)
-	./$(TARGET) test/caso_1_sjf.txt
-
-test_srt: $(TARGET)
-	./$(TARGET) test/caso_1_srt.txt
-
 test_multicolas: $(TARGET)
 	./$(TARGET) test/caso_2_multicolas.txt
 
