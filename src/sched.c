@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief Planificación de procesos
- * @author John Navia, Ricardo Delgado
+ * @author Erwin Meza Vega [emezav@unicauca.edu.co]
  *
  */
 
@@ -135,15 +135,8 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
             }
         }
 
-        //cola_actual = (cola_actual + 1) % nqueues;
-        int cola_encontrada = 0;
-        for (i = 0; i < nqueues; i++) {
-            if (!empty(queues[i].ready)) {
-                cola_actual = i;  // Siempre la de mayor prioridad disponible
-                cola_encontrada = 1;
-                break;
-            }
-        }
+        // Cambiar a la siguiente cola de prioridad
+        cola_actual = (cola_actual + 1) % nqueues;
     }
 
     // CALCULAR ESTADISTICAS FINALES
@@ -164,14 +157,14 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
     printf("Tiempo promedio de espera: %.2f unidades de tiempo\n", tiempo_promedio_espera);
 
     // TABLA DE PROCESOS
-    printf("\n%5s%15s%12s%8s%10s%15s\n",
+    printf("\n%5s%15s%12s%10s%12s%18s\n",
            "#", "Proceso", "T. Llegada", "Tamaño", "T. Espera", "T. Finalizacion");
-    printf("-------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------\n");
 
     i = 1;
     for (it = head(processes); it != 0; it = next(it)) {
         p = (process *)it->data;
-        printf("%5d%15s%12d%8d%10d%15d\n",
+        printf("%5d%15s%12d%10d%12d%18d\n",
                i++, p->name, p->arrival_time, p->execution_time,
                p->waiting_time, p->finished_time);
     }
@@ -405,7 +398,8 @@ int process_arrival(int now, priority_queue *queues, int nqueues)
                 continue;
             }
 
-            printf("[%d] Process %s arrived at %d.\n", now, p->name, p->arrival_time);
+            printf("[%d] Process %s arrived -> Cola %d (%s)\n", 
+                   now, p->name, i+1, queues[i].strategy == RR ? "RR" : "FIFO");
             p->state = READY;
             
             // Dibujar la linea del tiempo de espera si llega tarde
