@@ -25,7 +25,7 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
     int i;
 
     list *sequence = create_list(); // Secuencia de ejecucion
-    sequence_item *si; // Item de secuencia de CPU
+    sequence_item *si;              // Item de secuencia de CPU
 
     node_iterator it;
     process *p;
@@ -41,7 +41,8 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
 
     // Obtener el tiempo minimo de llegada
     tiempo_actual = get_next_arrival(queues, nqueues);
-    if (tiempo_actual == -1) tiempo_actual = 0;
+    if (tiempo_actual == -1)
+        tiempo_actual = 0;
 
     printf("Tiempo inicial: %d\n", tiempo_actual);
 
@@ -49,23 +50,30 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
     process_arrival(tiempo_actual, queues, nqueues);
 
     // Algoritmo principal de planificacion - Simplificado
-    while (procesos_restantes > 0) {
+    while (procesos_restantes > 0)
+    {
 
         // Buscar la cola de mayor prioridad que tenga procesos listos
         int cola_encontrada = 0;
-        for (i = 0; i < nqueues; i++) {
-            int cola_idx = (cola_actual + i) % nqueues;
-            if (!empty(queues[cola_idx].ready)) {
-                cola_actual = cola_idx;
+
+        /*  recorrer desde 0 (máxima prioridad) hasta nqueues-1
+           para escoger la primera cola no vacía (jerarquía estricta). */
+        for (i = 0; i < nqueues; i++)
+        {
+            if (!empty(queues[i].ready))
+            {
+                cola_actual = i;
                 cola_encontrada = 1;
                 break;
             }
         }
 
-        if (!cola_encontrada) {
+        if (!cola_encontrada)
+        {
             // No hay procesos listos, avanzar al siguiente evento de llegada
             siguiente_llegada = get_next_arrival(queues, nqueues);
-            if (siguiente_llegada == -1) {
+            if (siguiente_llegada == -1)
+            {
                 // No hay mas llegadas, terminar
                 break;
             }
@@ -84,10 +92,13 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
                tiempo_actual, proceso_actual->name, cola_actual + 1, proceso_actual->remaining_time);
 
         // Calcular tiempo a asignar
-        if (queues[cola_actual].strategy == RR) {
+        if (queues[cola_actual].strategy == RR)
+        {
             // Round Robin: usar quantum
             tiempo_asignado = min(queues[cola_actual].quantum, proceso_actual->remaining_time);
-        } else {
+        }
+        else
+        {
             // FIFO: dar todo el tiempo restante (no expropiativo)
             tiempo_asignado = proceso_actual->remaining_time;
         }
@@ -116,27 +127,32 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
         process_arrival(tiempo_actual, queues, nqueues);
 
         // Verificar si el proceso ha finalizado
-        if (proceso_actual->remaining_time <= 0) {
+        if (proceso_actual->remaining_time <= 0)
+        {
             proceso_actual->state = FINISHED;
             proceso_actual->finished_time = tiempo_actual;
             push_back(queues[cola_actual].finished, proceso_actual);
             procesos_restantes--;
             printf("[T=%d] Proceso %s FINALIZADO\n", tiempo_actual, proceso_actual->name);
-        } else {
+        }
+        else
+        {
             // El proceso no finalizo, volver a la cola de listos
             proceso_actual->state = READY;
 
-            if (queues[cola_actual].strategy == RR) {
+            if (queues[cola_actual].strategy == RR)
+            {
                 // Round Robin: insertar al final de la cola
                 push_back(queues[cola_actual].ready, proceso_actual);
-            } else {
+            }
+            else
+            {
                 // FIFO: insertar al inicio (continua su ejecucion)
+                // NOTA: en general para FIFO no se espera que llegue aquí
+                // porque para FIFO asignamos todo el remaining_time.
                 push_front(queues[cola_actual].ready, proceso_actual);
             }
         }
-
-        // Cambiar a la siguiente cola de prioridad
-        cola_actual = (cola_actual + 1) % nqueues;
     }
 
     // CALCULAR ESTADISTICAS FINALES
@@ -149,7 +165,8 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
 
     // Calcular tiempo promedio de espera
     float tiempo_promedio_espera = 0;
-    for (it = head(processes); it != 0; it = next(it)) {
+    for (it = head(processes); it != 0; it = next(it))
+    {
         p = (process *)it->data;
         total_waiting += p->waiting_time;
     }
@@ -162,7 +179,8 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
     printf("--------------------------------------------------------------------------------\n");
 
     i = 1;
-    for (it = head(processes); it != 0; it = next(it)) {
+    for (it = head(processes); it != 0; it = next(it))
+    {
         p = (process *)it->data;
         printf("%5d%15s%12d%10d%12d%18d\n",
                i++, p->name, p->arrival_time, p->execution_time,
@@ -171,10 +189,12 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
 
     // SECUENCIA DE EJECUCION
     printf("\nSecuencia de ejecucion:\n");
-    for (it = head(sequence); it != 0; it = next(it)) {
+    for (it = head(sequence); it != 0; it = next(it))
+    {
         si = (sequence_item *)it->data;
         printf("%s(%d) ", si->name, si->time);
-        if (next(it) != NULL) printf("- ");
+        if (next(it) != NULL)
+            printf("- ");
     }
     printf("\n");
 
@@ -289,10 +309,10 @@ void print_process(process *p)
     }
     printf("(%s arrival:%d execution:%d finished:%d waiting:%d ",
            p->name, p->arrival_time, p->execution_time, p->finished_time, p->waiting_time);
-    
-    printf("%s )\n", (p->state == READY) ? "ready" : 
-                     (p->state == LOADED) ? "loaded" :
-                     (p->state == FINISHED) ? "finished" : "unknown");
+
+    printf("%s )\n", (p->state == READY) ? "ready" : (p->state == LOADED) ? "loaded"
+                                                 : (p->state == FINISHED) ? "finished"
+                                                                          : "unknown");
 }
 
 void prepare(list *processes, priority_queue *queues, int nqueues)
@@ -314,7 +334,7 @@ void prepare(list *processes, priority_queue *queues, int nqueues)
         {
             queues[i].ready = create_list();
         }
-        
+
         if (queues[i].arrival != 0)
         {
             clear_list(queues[i].arrival, 0);
@@ -323,7 +343,7 @@ void prepare(list *processes, priority_queue *queues, int nqueues)
         {
             queues[i].arrival = create_list();
         }
-        
+
         if (queues[i].finished != 0)
         {
             clear_list(queues[i].finished, 0);
@@ -339,24 +359,25 @@ void prepare(list *processes, priority_queue *queues, int nqueues)
     {
         p = (process *)it->data;
         restart_process(p);
-        
-        printf("Agregando proceso %s a cola %d (arrival: %d)\n", 
+
+        printf("Agregando proceso %s a cola %d (arrival: %d)\n",
                p->name, p->priority, p->arrival_time);
-        
+
         // Verificar que la prioridad sea válida
         if (p->priority < 0 || p->priority >= nqueues)
         {
             printf("Error: proceso %s tiene prioridad invalida %d\n", p->name, p->priority + 1);
             continue;
         }
-        
+
         insert_ordered(queues[p->priority].arrival, p, compare_arrival);
     }
 
     printf("Colas preparadas:\n");
-    for (i = 0; i < nqueues; i++) {
-        printf("Cola %d (%s, q=%d): arrival=%d, ready=%d\n", 
-               i+1, 
+    for (i = 0; i < nqueues; i++)
+    {
+        printf("Cola %d (%s, q=%d): arrival=%d, ready=%d\n",
+               i + 1,
                queues[i].strategy == RR ? "RR" : "FIFO",
                queues[i].quantum,
                queues[i].arrival->count,
@@ -398,10 +419,10 @@ int process_arrival(int now, priority_queue *queues, int nqueues)
                 continue;
             }
 
-            printf("[%d] Process %s arrived -> Cola %d (%s)\n", 
-                   now, p->name, i+1, queues[i].strategy == RR ? "RR" : "FIFO");
+            printf("[%d] Process %s arrived -> Cola %d (%s)\n",
+                   now, p->name, i + 1, queues[i].strategy == RR ? "RR" : "FIFO");
             p->state = READY;
-            
+
             // Dibujar la linea del tiempo de espera si llega tarde
             if (now > p->arrival_time)
             {
