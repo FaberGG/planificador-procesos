@@ -1,0 +1,13 @@
+# Utiliza 1 cola de prioridad
+DEFINE queues 1
+DEFINE scheduling 1 FIFO
+DEFINE quantum 1 10
+
+# Mezcla de procesos con diferentes características
+PROCESS A 0 3 1
+PROCESS B 1 7 1
+PROCESS C 3 2 1
+PROCESS D 4 4 1
+PROCESS E 6 1 1
+
+START

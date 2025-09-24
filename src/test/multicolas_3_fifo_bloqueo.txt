@@ -1,0 +1,19 @@
+# Dos colas
+DEFINE queues 2
+
+# Cola 1: FIFO (no expropiativa)
+DEFINE scheduling 1 FIFO
+DEFINE quantum 1 10
+
+# Cola 2: RR (quantum 2)
+DEFINE scheduling 2 RR
+DEFINE quantum 2 2
+
+# Procesos
+PROCESS L1 0 12 1   # largo, cola1 FIFO
+PROCESS S1 1 3 2    # corto, cola2 RR
+PROCESS S2 2 2 2    # corto, cola2 RR
+PROCESS S3 3 4 2    # corto, cola2 RR
+
+START
+

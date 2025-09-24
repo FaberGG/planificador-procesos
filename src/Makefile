@@ -3,7 +3,7 @@
 # Optimized for Debian 12 (GNU/Linux)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -g -D_GNU_SOURCE
+CFLAGS =  -std=c99 -g -D_GNU_SOURCE
 LDFLAGS = -lm
 TARGET = scheduler
 SRCDIR = .
@@ -38,36 +38,90 @@ install-deps:
 	sudo apt update
 	sudo apt install -y build-essential gcc make gnuplot-x11
 
-test_fifo: $(TARGET) 
-	@echo "=== Ejecutando prueba FIFO ==="
-	./$(TARGET) < $(TESTDIR)/caso_1_fifo.txt
+# === TESTS ===
 
-test_rr: $(TARGET) 
-	@echo "=== Ejecutando prueba RR ==="
+# old tests (caso_1_rr.txt y caso_2_multicolas.txt)
+test_rr_old: $(TARGET)
+	@echo "=== Ejecutando prueba caso_1_rr ==="
 	./$(TARGET) < $(TESTDIR)/caso_1_rr.txt
 
-test_multi: $(TARGET) 
-	@echo "=== Ejecutando prueba multicolas ==="
+test_multi_old: $(TARGET)
+	@echo "=== Ejecutando prueba caso_2_multicolas ==="
 	./$(TARGET) < $(TESTDIR)/caso_2_multicolas.txt
 
+# FIFO
+test_fifo1: $(TARGET)
+	@echo "=== Ejecutando prueba FIFO 1 (escalonado) ==="
+	./$(TARGET) < $(TESTDIR)/fifo_1_escalonado.txt
 
-$(TESTDIR):
-	mkdir -p $(TESTDIR)
+test_fifo2: $(TARGET)
+	@echo "=== Ejecutando prueba FIFO 2 (mismo tiempo) ==="
+	./$(TARGET) < $(TESTDIR)/fifo_2_mismo_tiempo.txt
+
+test_fifo3: $(TARGET)
+	@echo "=== Ejecutando prueba FIFO 3 (proceso largo) ==="
+	./$(TARGET) < $(TESTDIR)/fifo_3_proceso_largo.txt
+
+test_fifo4: $(TARGET)
+	@echo "=== Ejecutando prueba FIFO 4 (mezcla) ==="
+	./$(TARGET) < $(TESTDIR)/fifo_4_mezcla.txt
+
+# Round Robin
+test_rr1: $(TARGET)
+	@echo "=== Ejecutando prueba RR 1 (quantum igual) ==="
+	./$(TARGET) < $(TESTDIR)/rr_1_quantum_igual.txt
+
+test_rr2: $(TARGET)
+	@echo "=== Ejecutando prueba RR 2 (quantum pequeño) ==="
+	./$(TARGET) < $(TESTDIR)/rr_2_quantum_pequeno.txt
+
+test_rr3: $(TARGET)
+	@echo "=== Ejecutando prueba RR 3 (variado) ==="
+	./$(TARGET) < $(TESTDIR)/rr_3_variado.txt
+
+# Multicolas
+test_multi1: $(TARGET)
+	@echo "=== Ejecutando prueba Multicolas 1 (FIFO + RR) ==="
+	./$(TARGET) < $(TESTDIR)/multicolas_1_fifo_rr.txt
+
+test_multi2: $(TARGET)
+	@echo "=== Ejecutando prueba Multicolas 2 (tres colas) ==="
+	./$(TARGET) < $(TESTDIR)/multicolas_2_trescolas.txt
+
+test_multi3: $(TARGET)
+	@echo "=== Ejecutando prueba Multicolas 3 (FIFO bloqueo) ==="
+	./$(TARGET) < $(TESTDIR)/multicolas_3_fifo_bloqueo.txt
 
 
 # Help
 help:
 	@echo "Targets disponibles:"
-	@echo "  all          - Compilar el programa"
-	@echo "  clean        - Limpiar archivos compilados"
-	@echo "  setup-tests  - Crear archivos de prueba"
-	@echo "  test1        - Ejecutar prueba 1"
-	@echo "  test2        - Ejecutar prueba 2"
-	@echo "  test3        - Ejecutar prueba 3"
-	@echo "  test_fifo    - Ejecutar prueba fifo"
-	@echo "  test_rr      - Ejecutar prueba rr"
-	@echo "  test_multi    - Ejecutar prueba multicolas"
-	@echo "  install-deps 	- Información sobre dependencias"
-	@echo "  help        	- Mostrar esta ayuda"
+	@echo "  all              - Compilar el programa"
+	@echo "  clean            - Limpiar archivos compilados"
+	@echo "  install-deps     - Instalar dependencias necesarias"
+	@echo ""
+	@echo "=== PRUEBAS ==="
+	@echo "  test_rr_old      - Ejecutar caso_1_rr.txt"
+	@echo "  test_multi_old   - Ejecutar caso_2_multicolas.txt"
+	@echo ""
+	@echo "  test_fifo1       - Ejecutar FIFO 1 (escalonado)"
+	@echo "  test_fifo2       - Ejecutar FIFO 2 (mismo tiempo)"
+	@echo "  test_fifo3       - Ejecutar FIFO 3 (proceso largo)"
+	@echo "  test_fifo4       - Ejecutar FIFO 4 (mezcla)"
+	@echo ""
+	@echo "  test_rr1         - Ejecutar RR 1 (quantum igual)"
+	@echo "  test_rr2         - Ejecutar RR 2 (quantum pequeño)"
+	@echo "  test_rr3         - Ejecutar RR 3 (variado)"
+	@echo ""
+	@echo "  test_multi1      - Ejecutar Multicolas 1 (FIFO + RR)"
+	@echo "  test_multi2      - Ejecutar Multicolas 2 (tres colas)"
+	@echo "  test_multi3      - Ejecutar Multicolas 3 (FIFO bloqueo)"
+	@echo ""
+	@echo "  test_all         - Ejecutar TODOS los tests"
+	@echo "  help             - Mostrar esta ayuda"
 
-.PHONY: all clean test1 test2 test3 test_fifo test_rr test_multi setup-tests install-deps help
+.PHONY: all clean test_rr_old test_multi_old \
+        test_fifo1 test_fifo2 test_fifo3 test_fifo4 \
+        test_rr1 test_rr2 test_rr3 \
+        test_multi1 test_multi2 test_multi3 \
+        install-deps help

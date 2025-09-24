@@ -1,0 +1,20 @@
+# Dos colas de prioridad
+DEFINE queues 2
+
+# Cola 1: prioridad alta, FIFO
+DEFINE scheduling 1 FIFO
+DEFINE quantum 1 10
+
+# Cola 2: prioridad baja, RR con quantum=2
+DEFINE scheduling 2 RR
+DEFINE quantum 2 2
+
+# Procesos
+PROCESS A 0 4 1   # llega t=0, cola1 FIFO
+PROCESS B 1 5 2   # llega t=1, cola2 RR
+PROCESS C 2 3 1   # llega t=2, cola1 FIFO
+PROCESS D 3 4 2   # llega t=3, cola2 RR
+PROCESS E 4 2 1   # llega t=4, cola1 FIFO
+
+START
+

@@ -1,0 +1,22 @@
+# Tres colas de prioridad
+DEFINE queues 3
+
+# Estrategias
+DEFINE scheduling 1 RR
+DEFINE scheduling 2 RR
+DEFINE scheduling 3 FIFO
+
+# Quantums
+DEFINE quantum 1 2
+DEFINE quantum 2 3
+DEFINE quantum 3 10
+
+# Procesos
+PROCESS P1 0 5 1   # RR prioridad 1
+PROCESS P2 1 4 2   # RR prioridad 2
+PROCESS P3 2 6 1   # RR prioridad 1
+PROCESS P4 3 3 3   # FIFO prioridad 3
+PROCESS P5 4 2 2   # RR prioridad 2
+
+START
+

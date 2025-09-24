@@ -1,0 +1,12 @@
+# Utiliza 1 cola de prioridad
+DEFINE queues 1
+DEFINE scheduling 1 RR
+DEFINE quantum 1 3
+
+# Quantum igual al tiempo de ejecución de algunos procesos
+PROCESS p1 0 3 1
+PROCESS p2 1 3 1
+PROCESS p3 2 6 1
+PROCESS p4 3 3 1
+
+START

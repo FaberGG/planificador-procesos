@@ -1,0 +1,12 @@
+# Utiliza 1 cola de prioridad
+DEFINE queues 1
+DEFINE scheduling 1 FIFO
+DEFINE quantum 1 10
+
+# Un proceso largo llega primero y bloquea a los cortos
+PROCESS p_largo 0 10 1
+PROCESS p_corto1 2 2 1
+PROCESS p_corto2 4 1 1
+PROCESS p_corto3 6 3 1
+
+START

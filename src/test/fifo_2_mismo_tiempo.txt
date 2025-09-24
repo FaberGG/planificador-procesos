@@ -1,0 +1,12 @@
+# Utiliza 1 cola de prioridad
+DEFINE queues 1
+DEFINE scheduling 1 FIFO
+DEFINE quantum 1 10
+
+# Todos los procesos llegan al mismo tiempo
+PROCESS p1 0 6 1
+PROCESS p2 0 4 1
+PROCESS p3 0 3 1
+PROCESS p4 0 5 1
+
+START

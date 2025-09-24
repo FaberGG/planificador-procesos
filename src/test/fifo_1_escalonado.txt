@@ -8,8 +8,10 @@ DEFINE scheduling 1 FIFO
 DEFINE quantum 1 10
 
 #Definir procesos: nombre, tiempo_llegada, tiempo_ejecucion, prioridad
-PROCESS p1 0 5 1
-PROCESS p2 2 4 1
-PROCESS p3 1 5 1
+# Procesos con llegadas escalonadas
+PROCESS p1 0 4 1
+PROCESS p2 2 3 1
+PROCESS p3 5 2 1
+PROCESS p4 7 5 1
 
 START

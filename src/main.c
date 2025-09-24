@@ -59,16 +59,10 @@ int main()
     // Ejecutar simulacion (prepare se llama dentro de schedule)
     schedule(processes, queues, nqueues);
     
-    // Opcional: crear diagrama de Gantt
-    printf("\n¿Desea generar diagrama de Gantt? (requiere gnuplot) [s/n]: ");
-    char response;
-    scanf(" %c", &response);
-    if (response == 's' || response == 'S') {
-        if (create_plot("gantt.plt", processes)) {
-            printf("Diagrama de Gantt generado: gantt.png\n");
-        } else {
-            printf("No se pudo generar el diagrama de Gantt\n");
-        }
+    if (create_plot("gantt.plt", processes)) {
+        printf("Diagrama de Gantt generado: gantt.png\n");
+    } else {
+        printf("No se pudo generar el diagrama de Gantt\n");
     }
     
     // Limpiar memoria
