@@ -49,7 +49,7 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
     // Procesar llegadas iniciales
     process_arrival(tiempo_actual, queues, nqueues);
 
-    // Algoritmo principal de planificacion - Simplificado
+    // Algoritmo principal de planificacion 
     while (procesos_restantes > 0)
     {
 
@@ -57,13 +57,13 @@ void schedule(list *processes, priority_queue *queues, int nqueues)
         int cola_encontrada = 0;
 
         /*  recorrer desde 0 (máxima prioridad) hasta nqueues-1
-           para escoger la primera cola no vacía (jerarquía estricta). */
+           para escoger la primera cola no vacía. */
         for (i = 0; i < nqueues; i++)
         {
             if (!empty(queues[i].ready))
             {
-                cola_actual = i;
-                cola_encontrada = 1;
+                cola_actual = i; // Siempre la de mayor prioridad
+                cola_encontrada = 1; 
                 break;
             }
         }
