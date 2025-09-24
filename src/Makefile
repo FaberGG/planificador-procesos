@@ -101,8 +101,6 @@ help:
 	@echo "  install-deps     - Instalar dependencias necesarias"
 	@echo ""
 	@echo "=== PRUEBAS ==="
-	@echo "  test_rr_old      - Ejecutar caso_1_rr.txt"
-	@echo "  test_multi_old   - Ejecutar caso_2_multicolas.txt"
 	@echo ""
 	@echo "  test_fifo1       - Ejecutar FIFO 1 (escalonado)"
 	@echo "  test_fifo2       - Ejecutar FIFO 2 (mismo tiempo)"
