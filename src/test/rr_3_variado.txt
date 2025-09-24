@@ -4,9 +4,9 @@ DEFINE scheduling 1 RR
 DEFINE quantum 1 2
 
 # Procesos variados con quantum 2
-PROCESTarea_larga 0 8 1
-PROCESCorta1 1 3 1
-PROCESCorta2 3 2 1
-PROCESMedia 4 5 1
+PROCESS Tarea_larga 0 8 1
+PROCESS Corta1 1 3 1
+PROCESS Corta2 3 2 1
+PROCESS Media 4 5 1
 
 START
